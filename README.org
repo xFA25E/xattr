@@ -1,0 +1,53 @@
+#+TITLE: Xattr
+Emacs library to interact with extended attributes
+
+* Overview
+This library enables the user to interact with extended attributes (xattrs from
+now on).  Xattrs are key-value metadata that can be added to files if filesystem
+supports them.  This has been tested only on Linux.
+
+** Features
+Four operations ore possible on xattrs: /set/, /get/, /remove/, /list/
+
+** Motivation
+I needed to tag files in dired.  I was abusing *image-dired* package to tag
+files, but, in the end, it was designed to work only with media files, which
+gave some troubles.  Future work will require to write some *dired-tags*
+package based on this library.
+
+* Usage
+#+begin_src elisp
+(xattr-set "my-file-name.ext" "user.my.attribute" "with value")
+;; => "with value"
+
+(xattr-set "my-file-name.ext" "user.my.attribute2" "with value2")
+;; => "with value2"
+
+(xattr-get "my-file-name.ext" "user.my.attribute")
+;; => "with value"
+
+(xattr-list "my-file-name.ext")
+;; => ("user.my.attribute" "user.my.attribute2")
+
+(xattr-remove "my-file-name.ext" "user.my.attribute")
+;; => nil
+
+(xattr-list "my-file-name.ext")
+;; => ("user.my.attribute2")
+#+end_src
+
+* Documentation
+~(xattr-set FILE NAME VALUE)~
+
+~(xattr-get FILE NAME)~
+
+~(xattr-list FILE)~
+
+~(xattr-remove FILE NAME)~
+
+All of this functions can signal different errors.  Please, inspect
+~define-error~ definitions in /xattr.el/ to learn more.
+
+* License
+Copyright (c) 2022 Valeriy Litkovskyy
+Licensed under the GPL3 License.

@@ -1,0 +1,4 @@
+*.elc
+.eldev
+*.o
+*.so
