@@ -267,6 +267,27 @@ xattr_list(emacs_env *env, ptrdiff_t nargs, emacs_value *args, void *data)
     return result;
 }
 
+static emacs_value
+xattr_empty_p(emacs_env *env, ptrdiff_t nargs, emacs_value *args, void *data)
+{
+    assert (nargs == 1);
+
+    char *sargs[1]; ssize_t size; emacs_value result = nil(env);
+
+    if (extract_sargs(env, 1, args, sargs)) {
+        size = listxattr(sargs[0], NULL, 0);
+        if (size == -1) {
+            signal_errno(env);
+        } else if (size == 0) {
+            result = intern(env, "t");
+        }
+
+        free_sargs(1, sargs);
+    }
+
+    return result;
+}
+
 /* A convenient function to define emacs functions. */
 static void
 define_function(emacs_env *env,
@@ -288,6 +309,7 @@ initialize_module(emacs_env *env)
     define_function(env, xattr_get, "xattr-core-get", 2, "Get FILE's xattr NAME.\n\n(fn FILE NAME)");
     define_function(env, xattr_remove, "xattr-core-remove", 2, "Remove FILE's xattr NAME.\n\n(fn FILE NAME)");
     define_function(env, xattr_list, "xattr-core-list", 1, "List FILE's xattrs.\n\n(fn FILE)");
+    define_function(env, xattr_empty_p, "xattr-core-empty-p", 1, "Return non-nil if FILE's xattrs is empty.\n\n(fn FILE)");
 
     emacs_value feature = intern(env, "xattr-core");
     funcall(env, "provide", 1, &feature);

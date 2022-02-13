@@ -166,6 +166,20 @@
    (xattr-list (make-temp-name (expand-file-name "./nofilehere")))
    :type 'file-missing))
 
+(ert-deftest xattr-test-empty-p ()
+  "Test a empty xattrs"
+  (xattr-test-with-temp-file file
+    (should (xattr-empty-p file))
+    (let ((keys (cl-loop repeat 10 collect (make-temp-name "user.key"))))
+      (mapc (lambda (key) (xattr-set file key "")) keys)
+      (should-not (xattr-empty-p file)))))
+
+(ert-deftest xattr-test-empty-p-file-missing ()
+  "Test signaling file-missing in empty-p"
+  (should-error
+   (xattr-empty-p (make-temp-name (expand-file-name "./nofilehere")))
+   :type 'file-missing))
+
 (provide 'xattr-test)
 ;;; xattr-test.el ends here
 

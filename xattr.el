@@ -27,7 +27,7 @@
 ;; It exposes several functions to set, get, remove and list xattrs.  All of
 ;; them can signal different errors.
 
-;; Functions: xattr-set, xattr-get, xattr-remove, xattr-list
+;; Functions: xattr-set, xattr-get, xattr-remove, xattr-list, xattr-empty-p
 
 ;;; Code:
 
@@ -203,6 +203,21 @@ not present."
         (signal 'xattr-not-supported (list file)))
        ((seq _ 'ERANGE _)
         (signal 'xattr-list-too-small nil))
+       ((seq sym errno strerror)
+        (signal sym (list (xattr-place :list) errno strerror file)))))))
+
+;;;###autoload
+(defun xattr-empty-p (file)
+  "Return non-nil if FILE's xattrs is empty."
+  (condition-case err
+      (xattr-core-empty-p file)
+    (xattr-errno
+     (xattr-signal-common :list err file)
+     (pcase err
+       ((seq _ 'E2BIG _)
+        (signal 'xattr-list-too-big (list file)))
+       ((seq _ 'ENOTSUP _)
+        (signal 'xattr-not-supported (list file)))
        ((seq sym errno strerror)
         (signal sym (list (xattr-place :list) errno strerror file)))))))
 

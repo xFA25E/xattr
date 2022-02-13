@@ -7,7 +7,7 @@ now on).  Xattrs are key-value metadata that can be added to files if filesystem
 supports them.  This has been tested only on Linux.
 
 ** Features
-Four operations ore possible on xattrs: /set/, /get/, /remove/, /list/
+Operations that are possible on xattrs: /set/, /get/, /remove/, /list/, /empty-p/
 
 ** Motivation
 I needed to tag files in dired.  I was abusing *image-dired* package to tag
@@ -42,6 +42,9 @@ make EMACS_SRC=/path/to/dir/where/emacs-module.h/is/stored
 
 (xattr-list "my-file-name.ext")
 ;; => ("user.my.attribute2")
+
+(xattr-empty-p "my-file-name.ext")
+;; => nil
 #+end_src
 
 * Documentation
@@ -50,6 +53,8 @@ make EMACS_SRC=/path/to/dir/where/emacs-module.h/is/stored
 ~(xattr-get FILE NAME)~
 
 ~(xattr-list FILE)~
+
+~(xattr-empty-p FILE)~
 
 ~(xattr-remove FILE NAME)~
 
