@@ -15,6 +15,14 @@ files, but, in the end, it was designed to work only with media files, which
 gave some troubles.  Future work will require to write some *dired-tags*
 package based on this library.
 
+* Building
+You need to get /emacs-module.h/ from emacs source files and set its directory
+to ~EMACS_SRC~ make variable
+
+#+begin_src sh
+make EMACS_SRC=/path/to/dir/where/emacs-module.h/is/stored
+#+end_src
+
 * Usage
 #+begin_src elisp
 (xattr-set "my-file-name.ext" "user.my.attribute" "with value")
