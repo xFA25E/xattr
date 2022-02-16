@@ -4,7 +4,7 @@
 
 ;; Author: Valeriy Litkovskyy <vlr.ltkvsk@protonmail.com>
 ;; Keywords: data, extensions, files, processes
-;; Version: 0.0.1
+;; Version: 0.0.2
 ;; URL: https://github.com/xFA25E/xattr
 ;; Package-Requires: ((emacs "25.1"))
 
