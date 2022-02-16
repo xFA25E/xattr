@@ -9,6 +9,8 @@ supports them.  This has been tested only on Linux.
 ** Features
 Operations that are possible on xattrs: /set/, /get/, /remove/, /list/, /empty-p/
 
+*MAP* implementation: /xattr-map.el/ implements map interface for ~xattr-map~
+
 ** Motivation
 I needed to tag files in dired.  I was abusing *image-dired* package to tag
 files, but, in the end, it was designed to work only with media files, which
@@ -45,6 +47,14 @@ make EMACS_SRC=/path/to/dir/where/emacs-module.h/is/stored
 
 (xattr-empty-p "my-file-name.ext")
 ;; => nil
+
+(require 'xattr-map)
+(let ((map (xattr-map "my-file-name.ext")))
+  (map-keys map)
+  ;; => ("user.my.attribute2")
+  (map-values map)
+  ;; => ("with value2")
+  )
 #+end_src
 
 * Documentation
@@ -60,6 +70,13 @@ make EMACS_SRC=/path/to/dir/where/emacs-module.h/is/stored
 
 All of this functions can signal different errors.  Please, inspect
 ~define-error~ definitions in /xattr.el/ to learn more.
+
+~(xattr-map FILE)~
+
+* Todo
+** Relative paths
+C module handles relative files relative to the directory where GNU/Emacs
+started.  Should we handle this in every xattr call?
 
 * License
 Copyright (c) 2022 Valeriy Litkovskyy
