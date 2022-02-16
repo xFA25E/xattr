@@ -4,7 +4,7 @@
 
 ;; Author: Valeriy Litkovskyy <vlr.ltkvsk@protonmail.com>
 ;; Keywords: data, extensions, files, processes
-;; Version: 0.0.2
+;; Version: 0.0.3
 ;; URL: https://github.com/xFA25E/xattr
 ;; Package-Requires: ((emacs "25.1"))
 
@@ -120,7 +120,6 @@ arguments passed to function."
       ((seq _ 'ENOENT strerror)
        (signal 'file-missing (list place strerror (cl-first arguments)))))))
 
-;;;###autoload
 (defun xattr-set (file name value)
   "Set FILE's xattr with NAME to VALUE."
   (condition-case err
@@ -143,7 +142,6 @@ arguments passed to function."
        ((seq sym errno strerror)
         (signal sym (list (xattr-place :set) errno strerror file name value)))))))
 
-;;;###autoload
 (defun xattr-get (file name &optional error-on-absence)
   "Get FILE's xattr with NAME.
 If ERROR-ON-ABSENCE is not nil, signal an error if attribute is
@@ -168,7 +166,6 @@ not present."
        ((seq sym errno strerror)
         (signal sym (list (xattr-place :get) errno strerror file name)))))))
 
-;;;###autoload
 (defun xattr-remove (file name &optional error-on-absence)
   "Remove FILE's xattr with NAME.
 If ERROR-ON-ABSENCE is not nil, signal an error if attribute is
@@ -189,7 +186,6 @@ not present."
        ((seq sym errno strerror)
         (signal sym (list (xattr-place :remove) errno strerror file name)))))))
 
-;;;###autoload
 (defun xattr-list (file)
   "List FILE's xattrs."
   (condition-case err
@@ -206,7 +202,6 @@ not present."
        ((seq sym errno strerror)
         (signal sym (list (xattr-place :list) errno strerror file)))))))
 
-;;;###autoload
 (defun xattr-empty-p (file)
   "Return non-nil if FILE's xattrs is empty."
   (condition-case err
