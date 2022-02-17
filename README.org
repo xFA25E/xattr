@@ -14,8 +14,8 @@ Operations that are possible on xattrs: /set/, /get/, /remove/, /list/, /empty-p
 ** Motivation
 I needed to tag files in dired.  I was abusing *image-dired* package to tag
 files, but, in the end, it was designed to work only with media files, which
-gave some troubles.  Future work will require to write some *dired-tags*
-package based on this library.
+gave some troubles.  Future work will require to write some [[https://github.com/xFA25E/dired-tags][dired-tags]] package
+based on this library.
 
 * Building
 You need to get /emacs-module.h/ from emacs source files and set its directory
