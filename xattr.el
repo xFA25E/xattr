@@ -6,7 +6,7 @@
 ;; Keywords: data, extensions, files, processes
 ;; Version: 0.0.3
 ;; URL: https://github.com/xFA25E/xattr
-;; Package-Requires: ((emacs "25.1"))
+;; Package-Requires: ((emacs "27.1"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

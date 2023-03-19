@@ -40,7 +40,7 @@
     (should-not (file-exists-p f))))
 
 (ert-deftest xattr-test-set ()
-  "Test setting xattrs"
+  "Test setting xattrs."
   (xattr-test-with-temp-file file
     (let ((key "user.key") (value "value1"))
       (xattr-set file key value)
@@ -50,7 +50,7 @@
       (should-not (xattr-list file)))))
 
 (ert-deftest xattr-test-set-empty-value ()
-  "Test setting empty values"
+  "Test setting empty values."
   (xattr-test-with-temp-file file
     (let ((key "user.key") (value ""))
       (xattr-set file key value)
@@ -60,7 +60,7 @@
       (should-not (xattr-list file)))))
 
 (ert-deftest xattr-test-set-gibberish-value ()
-  "Test setting gibberish values"
+  "Test setting gibberish values."
   (xattr-test-with-temp-file file
     (let ((key "user.key") (value (concat "random" (string 34 3 252 0 65 2 3 4) "random")))
       (xattr-set file key value)
@@ -70,7 +70,7 @@
       (should-not (xattr-list file)))))
 
 (ert-deftest xattr-test-set-gibberish-key ()
-  "Test setting gibberish keys"
+  "Test setting gibberish keys."
   (xattr-test-with-temp-file file
     (let ((key (concat "user." (string 34 3 252 46466 65 2 3 4))) (value "value"))
       (xattr-set file key value)
@@ -80,95 +80,95 @@
       (should-not (xattr-list file)))))
 
 (ert-deftest xattr-test-set-file-missing ()
-  "Test signaling file-missing in set"
+  "Test signaling file-missing in set."
   (should-error
    (xattr-set (make-temp-name (expand-file-name "./nofilehere")) "user.key" "value")
    :type 'file-missing))
 
 (ert-deftest xattr-test-set-invalid-prefix ()
-  "Test signaling invalid prefix error in set"
+  "Test signaling invalid prefix error in set."
   (xattr-test-with-temp-file file
     (should-error
      (xattr-set file (concat (make-temp-name "surelynoprefixy") ".key") "value")
      :type 'xattr-not-supported-or-invalid-prefix)))
 
 (ert-deftest xattr-test-set-empty-name ()
-  "Test signaling empty name error in set"
+  "Test signaling empty name error in set."
   (xattr-test-with-temp-file file
     (should-error (xattr-set file "user." "value") :type 'xattr-empty-name)))
 
 (ert-deftest xattr-test-get-absent ()
-  "Test getting absent xattr with no error"
+  "Test getting absent xattr with no error."
   (xattr-test-with-temp-file file
     (should-not (xattr-get file "user.absent"))))
 
 (ert-deftest xattr-test-get-absent-error ()
-  "Test getting absent xattr with error"
+  "Test getting absent xattr with error."
   (xattr-test-with-temp-file file
     (should-error (xattr-get file "user.absent" t)
                   :type 'xattr-absent-attribute-or-no-access)))
 
 (ert-deftest xattr-test-get-invalid-prefix ()
-  "Test signaling invalid prefix error in get"
+  "Test signaling invalid prefix error in get."
   (xattr-test-with-temp-file file
     (should-error
      (xattr-get file (concat (make-temp-name "surelynoprefixy") ".key"))
      :type 'xattr-not-supported-or-invalid-prefix)))
 
 (ert-deftest xattr-test-get-empty-name ()
-  "Test signaling empty name error in get"
+  "Test signaling empty name error in get."
   (xattr-test-with-temp-file file
     (should-error (xattr-get file "user.") :type 'xattr-empty-name)))
 
 (ert-deftest xattr-test-get-file-missing ()
-  "Test signaling file-missing in get"
+  "Test signaling file-missing in get."
   (should-error
    (xattr-get (make-temp-name (expand-file-name "./nofilehere")) "user.key")
    :type 'file-missing))
 
 (ert-deftest xattr-test-remove-absent ()
-  "Test removing absent xattr with no error"
+  "Test removing absent xattr with no error."
   (xattr-test-with-temp-file file
     (should-not (xattr-remove file "user.absent"))))
 
 (ert-deftest xattr-test-remove-absent-error ()
-  "Test removing absent xattr with error"
+  "Test removing absent xattr with error."
   (xattr-test-with-temp-file file
     (should-error (xattr-remove file "user.absent" t) :type 'xattr-absent-attribute)))
 
 (ert-deftest xattr-test-remove-invalid-prefix ()
-  "Test signaling invalid prefix error in remove"
+  "Test signaling invalid prefix error in remove."
   (xattr-test-with-temp-file file
     (should-error
      (xattr-remove file (concat (make-temp-name "surelynoprefixy") ".key"))
      :type 'xattr-not-supported-or-invalid-prefix)))
 
 (ert-deftest xattr-test-remove-empty-name ()
-  "Test signaling empty name error in remove"
+  "Test signaling empty name error in remove."
   (xattr-test-with-temp-file file
     (should-error (xattr-remove file "user.") :type 'xattr-empty-name)))
 
 (ert-deftest xattr-test-remove-file-missing ()
-  "Test signaling file-missing in remove"
+  "Test signaling file-missing in remove."
   (should-error
    (xattr-remove (make-temp-name (expand-file-name "./nofilehere")) "user.key")
    :type 'file-missing))
 
 (ert-deftest xattr-test-list ()
-  "Test a lot of keys in xattr"
+  "Test a lot of keys in xattr."
   (xattr-test-with-temp-file file
     (let ((keys (cl-loop repeat 10 collect (make-temp-name "user.key"))))
       (mapc (lambda (key) (xattr-set file key "")) keys)
       (cl-set-difference (xattr-list file) keys :test #'string=))))
 
 (ert-deftest xattr-test-list-file-missing ()
-  "Test signaling file-missing in list"
+  "Test signaling file-missing in list."
   (should-error
    (xattr-list (make-temp-name (expand-file-name "./nofilehere")))
    :type 'file-missing))
 
 (ert-deftest xattr-test-empty-p ()
-  "Test a empty xattrs"
+  "Test a empty xattrs."
   (xattr-test-with-temp-file file
     (should (xattr-empty-p file))
     (let ((keys (cl-loop repeat 10 collect (make-temp-name "user.key"))))
@@ -176,7 +176,7 @@
       (should-not (xattr-empty-p file)))))
 
 (ert-deftest xattr-test-empty-p-file-missing ()
-  "Test signaling file-missing in empty-p"
+  "Test signaling file-missing in empty-p."
   (should-error
    (xattr-empty-p (make-temp-name (expand-file-name "./nofilehere")))
    :type 'file-missing))
@@ -221,10 +221,6 @@ Bind VAR to map and execute BODY."
     (setf (map-elt map "user.key1") "valueA")
     (should (string= (map-elt map "user.key1") "valueA")))
   (xattr-test-with-map map
-    (with-suppressed-warnings ((obsolete map-put))
-      (map-put map "user.key1" "valueA"))
-    (should (string= (map-elt map "user.key1") "valueA")))
-  (xattr-test-with-map map
     (map-put! map "user.key1" "valueA")
     (should (string= (map-elt map "user.key1") "valueA"))))
 
@@ -238,7 +234,9 @@ Bind VAR to map and execute BODY."
 (ert-deftest xattr-test-map-insert-error ()
   "`map-insert' should not be implemented for xattr."
   (xattr-test-with-empty-map map
-    (should-error (map-insert map "user.key1" "valueA") :type 'map-inplace)))
+    (if (version-list-<= (version-to-list "28.1") (version-to-list emacs-version))
+        (should-error (map-insert map "user.key1" "valueA") :type 'cl-no-applicable-method)
+      (should-error (map-insert map "user.key1" "valueA") :type 'map-inplace))))
 
 (ert-deftest xattr-test-map-delete ()
   (xattr-test-with-map map
@@ -255,7 +253,9 @@ Bind VAR to map and execute BODY."
 (ert-deftest xattr-test-map-nested-elt ()
   (xattr-test-with-map map
     (should (map-nested-elt map ["user.key1"]))
-    (should-error (map-nested-elt map ["user.key1" "user.key2"]))))
+    (if (version-list-<= (version-to-list "28.1") (version-to-list emacs-version))
+        (should-not (map-nested-elt map ["user.key1" "user.key2"]))
+      (should-error (map-nested-elt map ["user.key1" "user.key2"])))))
 
 (ert-deftest xattr-test-mapp ()
   (xattr-test-with-empty-map map

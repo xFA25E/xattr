@@ -1,4 +1,7 @@
 #+TITLE: Xattr
+
+[[https://github.com/xFA25E/xattr/actions/workflows/test.yml/badge.svg]]
+
 Emacs library to interact with extended attributes
 
 * Overview
