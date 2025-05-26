@@ -3,7 +3,7 @@
 
   inputs = {
     eldev.flake = false;
-    eldev.url = "github:doublep/eldev/1.3.1";
+    eldev.url = "github:emacs-eldev/eldev/1.3.1";
     emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -20,6 +20,7 @@
   } @ inputs:
     std.growOn {
       inherit inputs;
+      systems = ["x86_64-linux"];
       cellsFrom = ./nix;
       cellBlocks = with std.blockTypes; [
         (functions "lib")

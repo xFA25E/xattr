@@ -8,6 +8,7 @@
   epkgs = (nixpkgs.appendOverlays [inputs.emacs-overlay.overlay]).emacs.pkgs;
 in {
   default = cell.packages."emacsPackages/${meta.name}";
+
   "emacsPackages/${meta.name}" = epkgs.melpaBuild {
     inherit (meta) version;
     pname = meta.name;
@@ -20,7 +21,7 @@ in {
     packageRequires = l.attrsets.attrVals meta.deps epkgs;
 
     EMACS_SRC = "${inputs.cells.automation.packages.emacsSrcWithModule}";
-    nativeBuildInputs = [nixpkgs.gnulib];
+    buildInputs = [nixpkgs.gnulib];
     preBuild = "make";
   };
 }
