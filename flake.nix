@@ -10,7 +10,7 @@
     std.inputs.nixpkgs.follows = "nixpkgs";
     std.url = "github:divnix/std";
     emacsSrc.flake = false;
-    emacsSrc.url = "https://git.savannah.gnu.org/cgit/emacs.git/snapshot/emacs-emacs-27.1.tar.gz";
+    emacsSrc.url = "github:emacs-mirror/emacs/emacs-27.1";
   };
 
   outputs = {
