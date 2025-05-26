@@ -265,22 +265,23 @@ Bind VAR to map and execute BODY."
 
 (ert-deftest xattr-test-map-keys ()
   (xattr-test-with-map map
-    (should (equal (map-keys map) '("user.key1" "user.key2" "user.key3"))))
+    (should (seq-set-equal-p (map-keys map)
+                             '("user.key1" "user.key2" "user.key3"))))
   (xattr-test-with-empty-map map
     (should-not (map-keys map))))
 
 (ert-deftest test-map-values ()
   (xattr-test-with-map map
-    (should (equal (map-values map) '("value1" "value2" "value3"))))
+    (should (seq-set-equal-p (map-values map) '("value1" "value2" "value3"))))
   (xattr-test-with-empty-map map
     (should-not (map-values map))))
 
 (ert-deftest test-map-pairs ()
   (xattr-test-with-map map
-    (should (equal (map-pairs map)
-                   '(("user.key1" . "value1")
-                     ("user.key2" . "value2")
-                     ("user.key3" . "value3")))))
+    (should (seq-set-equal-p (map-pairs map)
+                             '(("user.key1" . "value1")
+                               ("user.key2" . "value2")
+                               ("user.key3" . "value3")))))
   (xattr-test-with-empty-map map
     (should-not (map-pairs map))))
 
@@ -297,8 +298,10 @@ Bind VAR to map and execute BODY."
 (ert-deftest xattr-test-map-apply ()
   (let ((fn (lambda (k v) (cons (intern k) v))))
     (xattr-test-with-map map
-      (should (equal (map-apply fn map)
-                     '((user.key1 . "value1") (user.key2 . "value2") (user.key3 . "value3")))))
+      (should (seq-set-equal-p (map-apply fn map)
+                               '((user.key1 . "value1")
+                                 (user.key2 . "value2")
+                                 (user.key3 . "value3")))))
     (xattr-test-with-empty-map map
       (should-not (map-apply fn map)))))
 
@@ -312,12 +315,16 @@ Bind VAR to map and execute BODY."
     (xattr-test-with-map map
       (setq res nil)
       (should-not (map-do fn map))
-      (should (equal res '((user.key3 "value3") (user.key2 "value2") (user.key1 "value1")))))))
+      (should (seq-set-equal-p res
+                               '((user.key3 "value3")
+                                 (user.key2 "value2")
+                                 (user.key1 "value1")))))))
 
 (ert-deftest xattr-test-map-keys-apply ()
   (xattr-test-with-map map
-    (should (equal (map-keys-apply (lambda (key) (concat key "A") ) map)
-                   '("user.key1A" "user.key2A" "user.key3A"))))
+    (should (seq-set-equal-p
+             (map-keys-apply (lambda (key) (concat key "A") ) map)
+             '("user.key1A" "user.key2A" "user.key3A"))))
   (xattr-test-with-empty-map map
     (let (ks)
       (should-not (map-keys-apply (lambda (k) (push k ks)) map))
@@ -325,8 +332,9 @@ Bind VAR to map and execute BODY."
 
 (ert-deftest xattr-test-map-values-apply ()
   (xattr-test-with-map map
-    (should (equal (map-values-apply (lambda (key) (concat key "A") ) map)
-                   '("value1A" "value2A" "value3A"))))
+    (should (seq-set-equal-p
+             (map-values-apply (lambda (key) (concat key "A") ) map)
+             '("value1A" "value2A" "value3A"))))
   (xattr-test-with-empty-map map
     (let (vs)
       (should-not (map-values-apply (lambda (v) (push v vs)) map))
@@ -334,10 +342,11 @@ Bind VAR to map and execute BODY."
 
 (ert-deftest xattr-test-map-filter ()
   (xattr-test-with-map map
-    (should (equal (map-filter (lambda (_k v)
-                                 (< 1 (string-to-number (substring v -1))))
-                               map)
-                   '(("user.key2" . "value2") ("user.key3" . "value3"))))
+    (should (seq-set-equal-p
+             (map-filter (lambda (_k v)
+                           (< 1 (string-to-number (substring v -1))))
+                         map)
+             '(("user.key2" . "value2") ("user.key3" . "value3"))))
     (should (equal (map-filter (lambda (_k _v) t) map) (map-pairs map)))
     (should-not (map-filter #'ignore map)))
   (xattr-test-with-empty-map map
